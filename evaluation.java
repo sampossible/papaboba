@@ -15,7 +15,14 @@ import javax.swing.ImageIcon;
  * @author sambasu
  */
 public class evaluation extends javax.swing.JFrame {
-
+    public boolean largeCup;
+    public boolean smallCup;
+    public String flavor;
+    public int fill;
+    public int sweetness;
+    public int ice;
+    public String top;
+    
     /**
      * Creates new form evaluation
      */
@@ -38,7 +45,7 @@ public class evaluation extends javax.swing.JFrame {
         
         finish.setIcon(i2);
     }
-    /*
+    
     private static int evaluateOrder(Order x) {
         int fin = 100;
 
@@ -60,6 +67,9 @@ public class evaluation extends javax.swing.JFrame {
                 fin -= 20;
             }
             if (sweetness != x.sweet){
+                fin -= 10;
+            }
+            if (ice != x.ice){
                 fin -= 10;
             }
             if (top != x.add){
@@ -84,6 +94,9 @@ public class evaluation extends javax.swing.JFrame {
             }
             if (sweetness != x.sweet){
                 fin -= 10;
+            }
+            if (ice != x.ice){
+                fin -= 10;   
             }
             if (top != x.add){
                 fin -=15;
