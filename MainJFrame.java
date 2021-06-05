@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+package pkgfinal.project;
 
 import java.sql.*;
 import java.awt.Color;
@@ -17,21 +17,20 @@ import javax.swing.table.*;
  */
 public class MainJFrame extends javax.swing.JFrame {
 
-    private static String dbURL = "jdbc:derby://localhost:1527/papa [username on USERNAME]";
+    private static String dbURL = "jdbc:derby://localhost:1527//finalC;user=test;password=test";
     private static Connection conn = null;
     private static Statement stmt = null;
     private static ArrayList<Order> masterOrders;
     private static ArrayList<Order> curOrders;
-    private static int deckOrder = 0;
 
     /**
      * Creates new form MainJFrame
      */
     public MainJFrame() {
         initComponents();
-        //connect();
-        //masterOrders = getMasterOrders();
-        //readMasterOrders(masterOrders);
+        connect();
+        masterOrders = getMasterOrders();
+        readMasterOrders(masterOrders);
     }
 
     private static void connect() {
@@ -95,7 +94,7 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         return record;
     }
-/*
+
     public void readMasterOrders(ArrayList<Order> s){
         for (int i = 0; i < s.size(); i++) {
             String fin = String.valueOf(s.get(i).id) + " "
@@ -110,33 +109,123 @@ public class MainJFrame extends javax.swing.JFrame {
             System.out.println(fin);
         }
     }
-    */
-    public void readMasterOrders(ArrayList<Order> s) {
-        
-    }
 
     private static void getRanOrder(){
         Random r = new Random();
         int n = r.nextInt(masterOrders.size());
         System.out.println(n);
-        Order chosen = masterOrders.get(n);
+        Order chosen = new Order();
+        chosen.setId(masterOrders.get(n).id);
+        chosen.setName(masterOrders.get(n).name);
+        chosen.setCloser(masterOrders.get(n).closer);
+        chosen.setSmall(masterOrders.get(n).small);
+        chosen.setLarge(masterOrders.get(n).large);
+        chosen.setFlavor(masterOrders.get(n).flavor);
+        chosen.setSweet(masterOrders.get(n).sweet);
+        chosen.setIce(masterOrders.get(n).ice);
+        chosen.setAdd(masterOrders.get(n).add);
+        printOrder(chosen);
+        ArrayList<Order> temp = new ArrayList();
+        temp.add(chosen);
+        curOrders = temp;
+   }
+
+    private static void removeOrder(int n){
+        curOrders.remove(n);
+    }
+
+    private static void getSpecOrder(int n){
+        Order chosen = new Order();
+        chosen.setId(masterOrders.get(n).id);
+        chosen.setName(masterOrders.get(n).name);
+        chosen.setCloser(masterOrders.get(n).closer);
+        chosen.setSmall(masterOrders.get(n).small);
+        chosen.setLarge(masterOrders.get(n).large);
+        chosen.setFlavor(masterOrders.get(n).flavor);
+        chosen.setSweet(masterOrders.get(n).sweet);
+        chosen.setIce(masterOrders.get(n).ice);
+        chosen.setAdd(masterOrders.get(n).add);
+        printOrder(chosen);
         curOrders.add(chosen);
    }
 
     private static void printOrder(Order x){
-        
+        String fin = String.valueOf(x.id) + " "
+                    + x.name + " " 
+                    + String.valueOf(x.closer) + " "
+                    + String.valueOf(x.small) + " "
+                    + String.valueOf(x.large) + " "
+                    + x.flavor + " "
+                    + String.valueOf(x.sweet) + " "
+                    + String.valueOf(x.ice) + " "
+                    + x.add;
+            System.out.println(fin);
     }
+
+    private static int evaluateOrder(Order x) {
+        int fin = 100;
+        
+        if (x.closer == true) {
+            if (largeCup && (x.large = true)){
+            } else {
+                fin -= 10;
+            }
+            if (smallCup && (x.small = true)){
+            } else {
+                fin -= 10;
+            }
+            if (flavor != x.flavor){
+                fin -= 20;
+            }
+            if (fill != 90){
+                fin -= 20;
+            }
+            if (sweetness != x.sweet){
+                fin -= 10;
+            }
+            if (top != x.add){
+                fin -=15;
+            }
+        } else {
+            if (largeCup && (x.large = true)){
+                
+            } else {
+                fin -= 10;
+            }
+            if (smallCup && (x.small = true)){
+                
+            } else {
+                fin -= 10;
+            }
+            if (flavor != x.flavor){
+                fin -= 20;
+            }
+            if (fill != 90){
+                fin -= 20;
+            }
+            if (sweetness != x.sweet){
+                fin -= 10;
+            }
+            if (top != x.add){
+                fin -=15;
+            }
+            fin += 25;
+        }
+        return fin;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         backBtn = new javax.swing.JButton();
+        forwardBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         orderNumField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -149,67 +238,15 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         sweetField = new javax.swing.JTextField();
         addField = new javax.swing.JTextField();
-        forwardBtn = new javax.swing.JButton();
         orderBtn = new javax.swing.JButton();
         finBtn = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(51, 204, 255));
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
 
         backBtn.setText("<");
         backBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 backBtnMouseClicked(evt);
-            }
-        });
-
-        jLabel1.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        jLabel1.setText("Order #");
-
-        orderNumField.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-
-        jLabel2.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        jLabel2.setText("Name");
-
-        nameField.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        nameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameFieldActionPerformed(evt);
-            }
-        });
-
-        smallCheckBox.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        smallCheckBox.setText("Small");
-
-        largeCheckBox.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        largeCheckBox.setText("Large");
-
-        flavorField.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        flavorField.setText("Flavor");
-
-        iceField.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        iceField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                iceFieldActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        jLabel3.setText("Ice Level");
-
-        jLabel4.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        jLabel4.setText("Sweetness");
-
-        sweetField.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-
-        addField.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
-        addField.setText("Toppings");
-        addField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addFieldActionPerformed(evt);
             }
         });
 
@@ -220,90 +257,119 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Order #");
+
+        orderNumField.setText("0");
+        orderNumField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orderNumFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Name");
+
+        nameField.setText("______");
+
+        smallCheckBox.setText("Small");
+
+        largeCheckBox.setText("Large");
+
+        flavorField.setText("Flavor");
+
+        iceField.setText("___");
+
+        jLabel3.setText("Ice Level");
+
+        jLabel4.setText("Sweetness");
+
+        sweetField.setText("___");
+
+        addField.setText("Add on");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(backBtn)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
+                        .addContainerGap()
+                        .addComponent(jLabel3)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(forwardBtn))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(iceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(4, 4, 4)
+                        .addComponent(orderNumField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(addField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(forwardBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(19, 19, 19)
+                                .addComponent(jLabel2))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(sweetField)
-                                            .addComponent(iceField, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
-                        .addComponent(smallCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap()
+                                .addComponent(smallCheckBox)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(largeCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 62, Short.MAX_VALUE)))
-                .addGap(29, 29, 29))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(addField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(flavorField, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(orderNumField, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(largeCheckBox, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sweetField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(49, 49, 49)
+                        .addComponent(flavorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 13, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(orderNumField, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel1)
+                    .addComponent(orderNumField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel2)
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(smallCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(largeCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(smallCheckBox)
+                    .addComponent(largeCheckBox))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(flavorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(iceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
                 .addGap(18, 18, 18)
-                .addComponent(flavorField, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(iceField, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(sweetField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)))
-                .addGap(18, 18, 18)
-                .addComponent(addField, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(forwardBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel4)
+                    .addComponent(sweetField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(addField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(forwardBtn)
+                    .addComponent(backBtn)))
         );
 
-        orderBtn.setBackground(new java.awt.Color(255, 166, 158));
-        orderBtn.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         orderBtn.setText("Take Order");
         orderBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -311,20 +377,10 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
-        finBtn.setBackground(new java.awt.Color(255, 166, 158));
-        finBtn.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         finBtn.setText("Finish Order");
         finBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 finBtnMouseClicked(evt);
-            }
-        });
-
-        jButton1.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
-        jButton1.setText("Next");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
             }
         });
 
@@ -333,48 +389,45 @@ public class MainJFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
+                .addGap(113, 113, 113)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(finBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(orderBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(46, 46, 46)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(91, 91, 91))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                    .addComponent(orderBtn)
+                    .addComponent(finBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(108, 108, 108))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(208, 208, 208)
-                .addComponent(orderBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(finBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(127, 127, 127)
+                        .addComponent(orderBtn)
+                        .addGap(47, 47, 47)
+                        .addComponent(finBtn)))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>                        
 
-    private void forwardBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forwardBtnMouseClicked
+    private void forwardBtnMouseClicked(java.awt.event.MouseEvent evt) {                                        
         // TODO add your handling code here:
-        /*System.out.println("Registered next order button clicked");
-        if (curOrders != null) {
-            Order temp = curOrders.remove(1);
-            curOrders.add(temp);
-            deckOrder++;
-            orderNumField.setText(String.valueOf(deckOrder));
-            smallCheckBox.setEnabled(temp.small);
-            largeCheckBox.setEnabled(temp.large);
+        System.out.println("Registered next order button clicked");
+        if (curOrders != null || curOrders.size() == Integer.valueOf(orderNumField.getText())) {
+            int num = Integer.valueOf(orderNumField.getText());
+            Order temp = curOrders.get(num);
+            num ++;
+            System.out.println(num);
+            
+            orderNumField.setText(String.valueOf(num));
+            nameField.setText(temp.name);
+            smallCheckBox.setSelected(temp.small);
+            largeCheckBox.setSelected(temp.large);
             flavorField.setText(temp.flavor);
             iceField.setText(String.valueOf(temp.ice));
             sweetField.setText(String.valueOf(temp.sweet));
@@ -382,27 +435,19 @@ public class MainJFrame extends javax.swing.JFrame {
         } else {
             System.out.println("No orders to be fulfilled");
         }
-    */
-        System.out.println("Registered next order button clicked");
-        orderNumField.setText("1");
-        nameField.setText("Sam");
-        smallCheckBox.setSelected(true);
-        flavorField.setText("matcha");
-        iceField.setText("25");
-        sweetField.setText("50");
-        addField.setText("hearts");
-        
-    }//GEN-LAST:event_forwardBtnMouseClicked
 
-    private void backBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backBtnMouseClicked
+    }                                       
+
+    private void backBtnMouseClicked(java.awt.event.MouseEvent evt) {                                     
         // TODO add your handling code here:
-        /*
         System.out.println("Registered previous order button clicked");
-        if (curOrders != null) {
-            Order temp = curOrders.remove(1);
-            curOrders.add(temp);
-            deckOrder--;
-            orderNumField.setText(String.valueOf(deckOrder));
+        if (curOrders != null || Integer.valueOf(orderNumField.getText()) == 1) {
+            int num = Integer.valueOf(orderNumField.getText());
+            Order temp = curOrders.get(num);
+            num --;
+            System.out.println(num);
+            orderNumField.setText(String.valueOf(num));
+            nameField.setText(temp.name);
             smallCheckBox.setEnabled(temp.small);
             largeCheckBox.setEnabled(temp.large);
             flavorField.setText(temp.flavor);
@@ -412,53 +457,43 @@ public class MainJFrame extends javax.swing.JFrame {
         } else {
             System.out.println("No orders to be fulfilled");
         }
-*/
-        System.out.println("Registered next order button clicked");
-        orderNumField.setText("2");
-        nameField.setText("Abby");
-        smallCheckBox.setSelected(true);
-        flavorField.setText("lemon");
-        iceField.setText("75");
-        sweetField.setText("50");
-        addField.setText("tapioca");
-    }//GEN-LAST:event_backBtnMouseClicked
+    }                                    
 
-    private void orderBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_orderBtnMouseClicked
+    private void orderBtnMouseClicked(java.awt.event.MouseEvent evt) {                                      
         // TODO add your handling code here:
         System.out.println("Registered get order button clicked");
         getRanOrder();
-    }//GEN-LAST:event_orderBtnMouseClicked
+    }                                     
 
-    private void finBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_finBtnMouseClicked
+    private void finBtnMouseClicked(java.awt.event.MouseEvent evt) {                                    
         // TODO add your handling code here:
-        System.out.println("Registered finishe order button clicked");
-    }//GEN-LAST:event_finBtnMouseClicked
+        System.out.println("Registered finish order button clicked");
+        int n = Integer.valueOf(orderNumField.getText());
+        Order chosen = new Order();
+        chosen.setId(curOrders.get(n).id);
+        chosen.setName(curOrders.get(n).name);
+        chosen.setCloser(curOrders.get(n).closer);
+        chosen.setSmall(curOrders.get(n).small);
+        chosen.setLarge(curOrders.get(n).large);
+        chosen.setFlavor(curOrders.get(n).flavor);
+        chosen.setSweet(curOrders.get(n).sweet);
+        chosen.setIce(curOrders.get(n).ice);
+        chosen.setAdd(curOrders.get(n).add);
+        removeOrder(n);
+        System.out.println(evaluateOrder(chosen));
+    }                                   
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void orderNumFieldActionPerformed(java.awt.event.ActionEvent evt) {                                              
         // TODO add your handling code here:
-        new fill1().setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }                                             
 
-    private void addFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addFieldActionPerformed
-
-    private void iceFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iceFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_iceFieldActionPerformed
-
-    private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameFieldActionPerformed
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify                     
     private javax.swing.JTextField addField;
     private javax.swing.JButton backBtn;
     private javax.swing.JButton finBtn;
     private javax.swing.JTextField flavorField;
     private javax.swing.JButton forwardBtn;
     private javax.swing.JTextField iceField;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -470,5 +505,5 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField orderNumField;
     private javax.swing.JCheckBox smallCheckBox;
     private javax.swing.JTextField sweetField;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 }
