@@ -214,12 +214,38 @@ public class fill4 extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         ImageIcon myimage2 = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imgs/bigBoba.png")));
+        ImageIcon myimage3 = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imgs/spoon-heart.png")));
+        ImageIcon myimage4 = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imgs/spoon-star.png")));
+        ImageIcon myimage5 = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imgs/spoon-X.png")));
         
+        //tapioca
         Image t1 =myimage2.getImage();
         Image t2 = t1.getScaledInstance(tap.getWidth(),tap.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon i2 = new ImageIcon(t2);
         
         tap.setIcon(i2);
+        
+        //hearts
+        Image t2 =myimage3.getImage();
+        Image t3 = t2.getScaledInstance(tap.getWidth(),tap.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon i3 = new ImageIcon(t2);
+        
+        tap.setIcon(i3);
+        
+        //stars
+        Image t3 =myimage4.getImage();
+        Image t4 = t3.getScaledInstance(tap.getWidth(),tap.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon i4 = new ImageIcon(t2);
+        
+        tap.setIcon(i4);
+        
+        //pluses
+        Image t4 =myimage5.getImage();
+        Image t5 = t4.getScaledInstance(tap.getWidth(),tap.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon i5 = new ImageIcon(t2);
+        
+        tap.setIcon(i5);
+        
         
         try {
             Thread.sleep(1000);
