@@ -24,13 +24,12 @@ import javax.swing.TransferHandler;
  * @author sambasu
  */
 public class fill4 extends javax.swing.JFrame {
-/*
     private int altX;
     private int altY;
     private int mouseX;
     private int mouseY;
     private boolean dragging;
-    */
+    
     /**
      * Creates new form fill4
      */
@@ -126,6 +125,23 @@ public class fill4 extends javax.swing.JFrame {
             }
         });
 
+        cup.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                cupMouseDragged(evt);
+            }
+        });
+        cup.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cupMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                cupMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                cupMouseReleased(evt);
+            }
+        });
+        
         tap.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 tapMouseDragged(evt);
@@ -143,6 +159,57 @@ public class fill4 extends javax.swing.JFrame {
             }
         });
 
+        star.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                starMouseDragged(evt);
+            }
+        });
+        star.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                starMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                starMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                starMouseReleased(evt);
+            }
+        });
+        
+        heart.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                heartMouseDragged(evt);
+            }
+        });
+        heart.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                heartMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                heartMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                heartMouseReleased(evt);
+            }
+        });
+        
+        plus.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                plusMouseDragged(evt);
+            }
+        });
+        plus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                plusMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                plusMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                plusMouseReleased(evt);
+            }
+        });
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -210,6 +277,71 @@ public class fill4 extends javax.swing.JFrame {
         new evaluation().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void cupMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cupMouseClicked
+        // TODO add your handling code here:
+        
+        ImageIcon myimage1 = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imgs/cup.png")));
+        
+        Image t1 =myimage1.getImage();
+        Image t2 = t1.getScaledInstance(tap.getWidth(),tap.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon i1 = new ImageIcon(t1);
+        
+        cup.setIcon(i1);
+        
+        try {
+            Thread.sleep(1000);
+            cup.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+            JComponent comp = (JComponent) evt.getSource();
+            TransferHandler th = comp.getTransferHandler();
+            
+            th.exportAsDrag(comp, evt, TransferHandler.COPY);
+            }
+            });
+        } catch (InterruptedException ex) {
+            Logger.getLogger(fill4.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        tap.setLocation(270, 70);
+    }//GEN-LAST:event_cupMouseClicked
+    
+    private void cupMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cupMouseDragged
+        // TODO add your handling code here:
+        
+        Point p = evt.getPoint();
+       if (dragging) {
+           cup.setAlignmentX(altX + ((int)p.getX() - mouseX));
+           cup.setAlignmentY(altY + ((int)p.getY() - mouseY));
+        }
+        
+        var c = (JComponent) evt.getSource();
+            var handler = c.getTransferHandler();
+            handler.exportAsDrag(c, evt, TransferHandler.COPY);*/
+            
+        JComponent comp = (JComponent) evt.getSource();
+        TransferHandler th = comp.getTransferHandler();
+
+        th.exportAsDrag(comp, evt, TransferHandler.COPY);
+    }//GEN-LAST:event_cupMouseDragged
+
+    private void cupMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cupMousePressed
+        // TODO add your handling code here:
+        Point p = evt.getPoint();
+        
+                dragging = true;
+                mouseX = (int) p.getX();
+                mouseY = (int) p.getY();
+                altX = (int) cup.getAlignmentX();
+                altY = (int) cup.getAlignmentX();
+                System.out.println(mouseX + mouseY);
+        
+    }//GEN-LAST:event_cupMousePressed
+
+    private void cupMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cupMouseReleased
+        // TODO add your handling code here:
+        dragging = false;
+    }//GEN-LAST:event_cupMouseReleased
+    
     private void tapMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tapMouseClicked
         // TODO add your handling code here:
         
@@ -223,8 +355,6 @@ public class fill4 extends javax.swing.JFrame {
         
         try {
             Thread.sleep(1000);
-            
-            /*
             tap.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent evt) {
@@ -233,7 +363,7 @@ public class fill4 extends javax.swing.JFrame {
             
             th.exportAsDrag(comp, evt, TransferHandler.COPY);
             }
-            }); */
+            });
         } catch (InterruptedException ex) {
             Logger.getLogger(fill4.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -242,27 +372,26 @@ public class fill4 extends javax.swing.JFrame {
     
     private void tapMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tapMouseDragged
         // TODO add your handling code here:
-       /*
+        
         Point p = evt.getPoint();
        if (dragging) {
            tap.setAlignmentX(altX + ((int)p.getX() - mouseX));
            tap.setAlignmentY(altY + ((int)p.getY() - mouseY));
         }
-        */
-        /*
+        
         var c = (JComponent) evt.getSource();
             var handler = c.getTransferHandler();
             handler.exportAsDrag(c, evt, TransferHandler.COPY);*/
-            /*
+            
         JComponent comp = (JComponent) evt.getSource();
         TransferHandler th = comp.getTransferHandler();
 
-        th.exportAsDrag(comp, evt, TransferHandler.COPY);*/
+        th.exportAsDrag(comp, evt, TransferHandler.COPY);
     }//GEN-LAST:event_tapMouseDragged
 
     private void tapMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tapMousePressed
         // TODO add your handling code here:
-        /*Point p = evt.getPoint();
+        Point p = evt.getPoint();
         
                 dragging = true;
                 mouseX = (int) p.getX();
@@ -270,14 +399,210 @@ public class fill4 extends javax.swing.JFrame {
                 altX = (int) tap.getAlignmentX();
                 altY = (int) tap.getAlignmentX();
                 System.out.println(mouseX + mouseY);
-        */
+        
     }//GEN-LAST:event_tapMousePressed
 
     private void tapMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tapMouseReleased
         // TODO add your handling code here:
-        //dragging = false;
+        dragging = false;
     }//GEN-LAST:event_tapMouseReleased
 
+    private void starMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_starMouseClicked
+        // TODO add your handling code here:
+        
+        ImageIcon myimage2 = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imgs/star.png")));
+        
+        Image t1 =myimage3.getImage();
+        Image t2 = t1.getScaledInstance(tap.getWidth(),tap.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon i3 = new ImageIcon(t2);
+        
+        star.setIcon(i3);
+        
+        try {
+            Thread.sleep(1000);
+            star.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+            JComponent comp = (JComponent) evt.getSource();
+            TransferHandler th = comp.getTransferHandler();
+            
+            th.exportAsDrag(comp, evt, TransferHandler.COPY);
+            }
+            });
+        } catch (InterruptedException ex) {
+            Logger.getLogger(fill4.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        star.setLocation(270, 70);
+    }//GEN-LAST:event_starMouseClicked
+    
+    private void starMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_starMouseDragged
+        // TODO add your handling code here:
+        
+        Point p = evt.getPoint();
+       if (dragging) {
+           star.setAlignmentX(altX + ((int)p.getX() - mouseX));
+           star.setAlignmentY(altY + ((int)p.getY() - mouseY));
+        }
+        
+        var c = (JComponent) evt.getSource();
+            var handler = c.getTransferHandler();
+            handler.exportAsDrag(c, evt, TransferHandler.COPY);*/
+            
+        JComponent comp = (JComponent) evt.getSource();
+        TransferHandler th = comp.getTransferHandler();
+
+        th.exportAsDrag(comp, evt, TransferHandler.COPY);
+    }//GEN-LAST:event_starMouseDragged
+
+    private void starMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_starMousePressed
+        // TODO add your handling code here:
+        Point p = evt.getPoint();
+        
+                dragging = true;
+                mouseX = (int) p.getX();
+                mouseY = (int) p.getY();
+                altX = (int) star.getAlignmentX();
+                altY = (int) star.getAlignmentX();
+                System.out.println(mouseX + mouseY);
+        
+    }//GEN-LAST:event_starMousePressed
+
+    private void starMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_starMouseReleased
+        // TODO add your handling code here:
+        dragging = false;
+    }//GEN-LAST:event_starMouseReleased
+    
+    private void heartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tapMouseClicked
+        // TODO add your handling code here:
+        
+        ImageIcon myimage2 = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imgs/heart.png")));
+        
+        Image t1 =myimage4.getImage();
+        Image t2 = t1.getScaledInstance(tap.getWidth(),tap.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon i4 = new ImageIcon(t2);
+        
+        heart.setIcon(i4);
+        
+        try {
+            Thread.sleep(1000);
+            tap.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+            JComponent comp = (JComponent) evt.getSource();
+            TransferHandler th = comp.getTransferHandler();
+            
+            th.exportAsDrag(comp, evt, TransferHandler.COPY);
+            }
+            });
+        } catch (InterruptedException ex) {
+            Logger.getLogger(fill4.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        heart.setLocation(270, 70);
+    }//GEN-LAST:event_heartMouseClicked
+    
+    private void heartMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_heartMouseDragged
+        // TODO add your handling code here:
+        
+        Point p = evt.getPoint();
+       if (dragging) {
+           heart.setAlignmentX(altX + ((int)p.getX() - mouseX));
+           heart.setAlignmentY(altY + ((int)p.getY() - mouseY));
+        }
+        
+        var c = (JComponent) evt.getSource();
+            var handler = c.getTransferHandler();
+            handler.exportAsDrag(c, evt, TransferHandler.COPY);*/
+            
+        JComponent comp = (JComponent) evt.getSource();
+        TransferHandler th = comp.getTransferHandler();
+
+        th.exportAsDrag(comp, evt, TransferHandler.COPY);
+    }//GEN-LAST:event_heartMouseDragged
+
+    private void heartMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_heartMousePressed
+        // TODO add your handling code here:
+        Point p = evt.getPoint();
+        
+                dragging = true;
+                mouseX = (int) p.getX();
+                mouseY = (int) p.getY();
+                altX = (int) heart.getAlignmentX();
+                altY = (int) heart.getAlignmentX();
+                System.out.println(mouseX + mouseY);
+        
+    }//GEN-LAST:event_heartMousePressed
+
+    private void heartMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_heartMouseReleased
+        // TODO add your handling code here:
+        dragging = false;
+    }//GEN-LAST:event_heartMouseReleased
+    
+    private void plusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plusMouseClicked
+        // TODO add your handling code here:
+        
+        ImageIcon myimage5 = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/imgs/plus.png")));
+        
+        Image t1 =myimage2.getImage();
+        Image t2 = t1.getScaledInstance(tap.getWidth(),tap.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon i5 = new ImageIcon(t2);
+        
+        plus.setIcon(i5);
+        
+        try {
+            Thread.sleep(1000);
+            plsu.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent evt) {
+            JComponent comp = (JComponent) evt.getSource();
+            TransferHandler th = comp.getTransferHandler();
+            
+            th.exportAsDrag(comp, evt, TransferHandler.COPY);
+            }
+            });
+        } catch (InterruptedException ex) {
+            Logger.getLogger(fill4.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        tap.setLocation(270, 70);
+    }//GEN-LAST:event_plusMouseClicked
+    
+    private void plusMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plusMouseDragged
+        // TODO add your handling code here:
+        
+        Point p = evt.getPoint();
+       if (dragging) {
+           plsu.setAlignmentX(altX + ((int)p.getX() - mouseX));
+           plus.setAlignmentY(altY + ((int)p.getY() - mouseY));
+        }
+        
+        var c = (JComponent) evt.getSource();
+            var handler = c.getTransferHandler();
+            handler.exportAsDrag(c, evt, TransferHandler.COPY);*/
+            
+        JComponent comp = (JComponent) evt.getSource();
+        TransferHandler th = comp.getTransferHandler();
+
+        th.exportAsDrag(comp, evt, TransferHandler.COPY);
+    }//GEN-LAST:event_plusMouseDragged
+
+    private void plusMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plusMousePressed
+        // TODO add your handling code here:
+        Point p = evt.getPoint();
+        
+                dragging = true;
+                mouseX = (int) p.getX();
+                mouseY = (int) p.getY();
+                altX = (int) tap.getAlignmentX();
+                altY = (int) tap.getAlignmentX();
+                System.out.println(mouseX + mouseY);
+        
+    }//GEN-LAST:event_plusMousePressed
+
+    private void tapMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tapMouseReleased
+        // TODO add your handling code here:
+        dragging = false;
+    }//GEN-LAST:event_tapMouseReleased
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -312,8 +637,7 @@ public class fill4 extends javax.swing.JFrame {
                 new fill4().setVisible(true);
             }
         });
-        
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
